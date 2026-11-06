@@ -1,5 +1,5 @@
 @php($analytics = config('analytics'))
-@if($analytics['enabled'])
+@if($analytics['enabled'] && request()->cookie('pa_consent') === 'all')
     @if($analytics['gtm_id'])
         <script>
             (function (w, d, s, l, i) {

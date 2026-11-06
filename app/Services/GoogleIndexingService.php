@@ -22,10 +22,12 @@ class GoogleIndexingService
             return false;
         }
 
-        $credentialsPath = config('services.google.indexing.credentials');
+        $credentialsPath = $this->credentialsPath();
 
         if (! $credentialsPath || ! is_file($credentialsPath)) {
-            Log::warning('Google Indexing API: falta GOOGLE_APPLICATION_CREDENTIALS.');
+            Log::warning('Google Indexing API: no se encontró el archivo de credenciales.', [
+                'path' => $credentialsPath,
+            ]);
             return false;
         }
 
@@ -59,6 +61,21 @@ class GoogleIndexingService
         }
 
         return true;
+    }
+
+    protected function credentialsPath(): ?string
+    {
+        $path = config('services.google.indexing.credentials');
+
+        if (! $path) {
+            return storage_path('app/google/service-account.json');
+        }
+
+        if (! preg_match('#^([A-Za-z]:[\\\\/]|/)#', $path)) {
+            return base_path($path);
+        }
+
+        return $path;
     }
 
     /**

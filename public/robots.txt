@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /admin
-Sitemap: https://puntoactual.pe/sitemap.xml
+Disallow: /login
+
+Sitemap: https://portal.brevare.com/sitemap.xml

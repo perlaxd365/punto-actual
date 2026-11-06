@@ -41,7 +41,22 @@
                     </div>
                     <h2 class="mt-2 line-clamp-3 text-lg font-bold leading-snug text-ink-950 transition group-hover:text-brand-600">{{ $item->title }}</h2>
                     <p class="mt-2 line-clamp-2 text-sm text-zinc-500">{{ $item->excerpt }}</p>
-                    <p class="mt-4 text-xs text-zinc-600">{{ $item->published_at?->format('d/m/Y H:i') }}</p>
+                    <div class="mt-4 grid gap-1.5 border-t border-black/5 pt-3 text-xs text-zinc-500">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="font-semibold uppercase tracking-wider text-zinc-400">Publicado</span>
+                            <span class="font-semibold text-zinc-600">{{ $item->published_at?->format('d/m/Y H:i') }}</span>
+                        </div>
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="font-semibold uppercase tracking-wider text-zinc-400">Autor</span>
+                            <span class="truncate font-semibold text-zinc-600">{{ $item->author?->name ?? 'Punto Actual' }}</span>
+                        </div>
+                        @if($item->source_name)
+                            <div class="flex items-center justify-between gap-3">
+                                <span class="font-semibold uppercase tracking-wider text-zinc-400">Fuente</span>
+                                <span class="truncate font-semibold text-zinc-600">{{ $item->source_name }}</span>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </a>
         @empty

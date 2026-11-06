@@ -92,11 +92,11 @@
             <label class="label">Poner en portada
                 <span class="flex items-center gap-2 rounded-xl border border-brand-500/20 bg-brand-50 px-4 py-3 text-sm text-brand-700">
                     <input type="checkbox" name="in_cover" value="1" @checked(old('in_cover', $news->in_cover)) class="h-4 w-4 rounded border-black/20 bg-white text-brand-600">
-                    Máx. 4
+                    Máx. 6
                 </span>
             </label>
         </div>
-        <p class="text-xs text-zinc-500">El carrusel de portada usa las noticias marcadas aquí (máximo 4). La última marcada aparece primero.</p>
+        <p class="text-xs text-zinc-500">El carrusel de portada usa las noticias marcadas aquí (máximo 6). La última marcada aparece primero.</p>
 
         <div class="grid gap-5 md:grid-cols-2">
             <label class="label">SEO título

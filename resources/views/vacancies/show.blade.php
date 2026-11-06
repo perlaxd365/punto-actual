@@ -2,6 +2,10 @@
 
 @section('title', $vacancy->title.' | Punto Actual')
 @section('description', 'Convocatoria: '.$vacancy->title.'. Entidad: '.$vacancy->entity->name.'. Régimen: '.$vacancy->employment_regime.'.')
+@section('og_type', 'article')
+@section('og_image', route('og.vacancy', $vacancy))
+@section('og_image_width', '1200')
+@section('og_image_height', '630')
 
 @push('head')
     <script type="application/ld+json">
@@ -63,13 +67,18 @@
                     <a href="{{ $vacancy->official_url }}" target="_blank" rel="noopener" class="btn-primary shrink-0" data-track="apply_click" data-track-id="{{ $vacancy->id }}" data-track-type="vacancy" data-track-label="{{ $vacancy->title }}">Ir a postular ↗</a>
                 </div>
 
-                <div class="mt-8 grid gap-5 border-y border-black/10 py-6 text-sm sm:grid-cols-3">
+                <div class="mt-8 rounded-2xl border border-brand-500/20 bg-brand-500/[0.06] p-5">
+                    <p class="text-xs font-bold uppercase tracking-wider text-brand-600">Carrera / especialidad</p>
+                    <p class="mt-1.5 text-base font-semibold leading-relaxed text-ink-950">{{ $vacancy->professional_career ?: 'Revisa las carreras y especialidades requeridas en las bases oficiales de la convocatoria.' }}</p>
+                </div>
+
+                <div class="mt-6 grid gap-5 border-y border-black/10 py-6 text-sm sm:grid-cols-3">
                     @foreach([
                         'Plazas' => $vacancy->vacancies_count ?? 'No indicado',
                         'Fecha de publicación' => $vacancy->published_at?->format('d/m/Y') ?? 'No indicada',
                         'Fecha límite' => $vacancy->application_end_at?->format('d/m/Y H:i') ?? 'Consultar bases',
                         'Formación académica' => $vacancy->education_level ?: 'Consultar bases',
-                        'Carrera / especialidad' => $vacancy->professional_career ?: 'Consultar bases',
+                        'Experiencia' => $vacancy->general_experience ?: ($vacancy->specific_experience ?: 'Consultar bases'),
                         'Modalidad' => $vacancy->work_mode ?: 'No indicada',
                     ] as $label => $value)
                         <div>

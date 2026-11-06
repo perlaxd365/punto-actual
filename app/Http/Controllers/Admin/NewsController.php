@@ -117,7 +117,7 @@ class NewsController extends Controller
         $keep = News::where('in_cover', true)
             ->orderByDesc('cover_at')
             ->orderByDesc('published_at')
-            ->take(4)
+            ->take(6)
             ->pluck('id');
 
         News::where('in_cover', true)

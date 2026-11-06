@@ -13,12 +13,37 @@
         <a href="{{ route('home') }}" class="btn-ghost !px-4 !py-2">Ver portal ↗</a>
     </div>
 
-    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="mt-8">
+        <div class="flex flex-wrap items-end justify-between gap-3">
+            <div>
+                <p class="section-label">Audiencia</p>
+                <h2 class="mt-1 text-2xl font-black tracking-tight">Visitas del portal</h2>
+            </div>
+            <p class="text-xs text-zinc-500">Páginas vistas por visitantes reales (sin bots ni sesiones del panel)</p>
+        </div>
+
+        <div class="mt-4 grid gap-4 sm:grid-cols-3">
+            @foreach([
+                ['Hoy', $todayVisits, 'Visitantes desde las 00:00'],
+                ['Ayer', $yesterdayVisits, 'Jornada anterior'],
+                ['Total', $totalVisits, 'Acumulado histórico'],
+            ] as [$label, $value, $hint])
+                <div class="card p-6">
+                    <p class="text-sm font-semibold text-zinc-600">{{ $label }}</p>
+                    <p class="mt-2 text-4xl font-black text-ink-950">{{ number_format($value, 0, ',', '.') }}</p>
+                    <p class="mt-2 text-xs text-zinc-600">{{ $hint }}</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         @foreach([
             ['Noticias', $newsCount, 'Noticias publicadas y borradores'],
             ['Convocatorias', $vacancyCount, 'Ofertas registradas'],
             ['Entidades', $entityCount, 'Instituciones en el directorio'],
             ['Borradores laborales', $pending, 'Convocatorias por publicar'],
+            ['Suscriptores', $subscriberCount ?? 0, 'Boletín activo'],
         ] as [$label, $value, $hint])
             <div class="card p-6">
                 <p class="text-sm font-semibold text-zinc-600">{{ $label }}</p>
@@ -39,6 +64,22 @@
         </a>
         <a class="group card flex items-center justify-between p-6 transition hover:border-brand-500/40" href="{{ route('admin.entities.index') }}">
             <span class="font-bold text-ink-950 transition group-hover:text-brand-600">Gestionar entidades</span>
+            <span class="text-brand-500">→</span>
+        </a>
+        <a class="group card flex items-center justify-between p-6 transition hover:border-brand-500/40" href="{{ route('admin.subscribers.index') }}">
+            <span class="font-bold text-ink-950 transition group-hover:text-brand-600">Suscriptores</span>
+            <span class="text-brand-500">→</span>
+        </a>
+        <a class="group card flex items-center justify-between p-6 transition hover:border-brand-500/40" href="{{ route('admin.newsletter.index') }}">
+            <span class="font-bold text-ink-950 transition group-hover:text-brand-600">Enviar boletín</span>
+            <span class="text-brand-500">→</span>
+        </a>
+        <a class="group card flex items-center justify-between p-6 transition hover:border-brand-500/40" href="{{ route('admin.team.index') }}">
+            <span class="font-bold text-ink-950 transition group-hover:text-brand-600">Equipo y roles</span>
+            <span class="text-brand-500">→</span>
+        </a>
+        <a class="group card flex items-center justify-between p-6 transition hover:border-brand-500/40" href="{{ route('admin.security.index') }}">
+            <span class="font-bold text-ink-950 transition group-hover:text-brand-600">Seguridad y 2FA</span>
             <span class="text-brand-500">→</span>
         </a>
     </div>

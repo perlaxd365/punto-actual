@@ -12,6 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->encryptCookies(except: ['pa_consent']);
+
+        $middleware->web(append: [
+            \App\Http\Middleware\TrackVisit::class,
+        ]);
+
         $middleware->alias([
             'api.token' => \App\Http\Middleware\AuthenticateApiToken::class,
         ]);

@@ -13,7 +13,7 @@
             'place' => $item->place_label,
             'category' => $item->category?->name,
         ])
-        : $featured->merge($latest)->filter(fn ($item) => $item->image)->unique('id')->take(4)->values()->map(fn ($item) => (object) [
+        : $featured->merge($latest)->filter(fn ($item) => $item->image)->unique('id')->take(6)->values()->map(fn ($item) => (object) [
             'title' => $item->title,
             'subtitle' => $item->excerpt,
             'image' => $item->image,
@@ -35,16 +35,16 @@
 @endphp
 
 @section('content')
-<section class="relative border-b border-black/10 bg-white">
-    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_500px_at_85%_-20%,rgba(225,29,46,0.14),transparent_62%)]"></div>
+<section class="relative border-b border-black/10 bg-[#f4f1ee]">
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_500px_at_85%_-20%,rgba(225,29,46,0.16),transparent_62%)]"></div>
     <div class="container-page relative py-6 lg:py-10">
         <div class="relative overflow-hidden rounded-3xl border border-black/10 bg-zinc-100 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_30px_70px_-40px_rgba(0,0,0,0.45)]" data-carousel data-interval="5000">
             <div class="relative h-[400px] sm:h-[480px] lg:h-[560px]">
                 @foreach($slides as $index => $slide)
                     <div class="carousel-slide absolute inset-0 {{ $index === 0 ? 'is-active' : '' }}" data-carousel-slide aria-hidden="{{ $index === 0 ? 'false' : 'true' }}">
                         <img src="{{ $slide->image }}" alt="{{ $slide->title }}" class="carousel-image absolute inset-0 h-full w-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/5"></div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-white/90 via-white/20 to-transparent"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/45 to-transparent"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-white/85 via-white/15 to-transparent"></div>
                         <div class="relative flex h-full items-end p-6 sm:p-10 lg:p-14">
                             <div class="max-w-xl">
                                 <div class="flex flex-wrap items-center gap-2">
@@ -56,10 +56,8 @@
                                         <span class="badge-soft">{{ $slide->place }}</span>
                                     @endif
                                 </div>
-                                <h1 class="mt-3 text-3xl font-black leading-[1.05] tracking-tight text-ink-950 sm:text-5xl">{{ $slide->title }}</h1>
-                                @if($slide->subtitle)
-                                    <p class="mt-3 max-w-lg text-base leading-relaxed text-zinc-600 sm:text-lg">{{ $slide->subtitle }}</p>
-                                @endif
+                                <h1 class="mt-3 line-clamp-2 text-3xl font-black leading-[1.05] tracking-tight text-ink-950 sm:text-5xl">{{ $slide->title }}</h1>
+                                <p class="mt-3 line-clamp-2 min-h-[3.25rem] max-w-lg text-base leading-relaxed text-zinc-700 sm:text-lg">{{ $slide->subtitle }}</p>
                                 <div class="mt-6 flex flex-wrap gap-3">
                                     <a href="{{ $slide->link }}" class="btn-primary" data-track="cover_click" data-track-label="{{ $slide->title }}">Leer más</a>
                                     <a href="{{ route('vacancies.index') }}" class="btn-ghost">Ver empleos</a>
@@ -80,6 +78,10 @@
         </div>
     </div>
 </section>
+
+<div class="container-page">
+    @include('partials.ads', ['adSlot' => 'home'])
+</div>
 
 @php($portada = $featured->merge($latest)->unique('id')->take(4))
 <section id="actualidad" class="container-page py-16">
@@ -142,6 +144,52 @@
     @endif
 </section>
 
+@php($localItems = ($local ?? collect())->reject(fn ($item) => $portada->contains('id', $item->id))->take(6))
+@if($localItems->isNotEmpty())
+<section id="peru" class="border-y border-black/10 bg-[#faf8f6]">
+    <div class="container-page py-16">
+        <div class="mb-8 flex items-end justify-between gap-4">
+            <div>
+                <p class="section-label">Cobertura nacional</p>
+                <h2 class="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Noticias del Perú</h2>
+                <p class="mt-2 max-w-xl text-zinc-600">Lo último de las regiones, la política, la economía y la vida del país, con contexto y fuentes verificadas.</p>
+            </div>
+            <a href="{{ route('news.index') }}" class="hidden text-sm font-bold text-brand-600 transition hover:text-brand-700 sm:inline">Ver todas →</a>
+        </div>
+
+        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            @foreach($localItems as $item)
+                <a href="{{ route('news.show', $item) }}" class="group card overflow-hidden transition duration-300 hover:-translate-y-1 hover:border-brand-500/40">
+                    <div class="aspect-[16/9] overflow-hidden border-b border-black/10 bg-zinc-100">
+                        @if($item->image)
+                            <img src="{{ $item->image }}" alt="{{ $item->title }}" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]">
+                        @else
+                            <div class="flex h-full items-center justify-center bg-gradient-to-br from-brand-100 to-zinc-100 text-4xl font-black text-black/10">PA</div>
+                        @endif
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-brand-600">{{ $item->category?->name ?? 'Actualidad' }}</span>
+                            @if($item->place_label)
+                                <span class="badge-soft">{{ $item->place_label }}</span>
+                            @endif
+                        </div>
+                        <h3 class="mt-2 line-clamp-2 text-lg font-bold leading-snug text-ink-950 transition group-hover:text-brand-600">{{ $item->title }}</h3>
+                        <p class="mt-2 line-clamp-2 text-sm text-zinc-500">{{ $item->excerpt }}</p>
+                        <div class="mt-4 flex items-center justify-between border-t border-black/5 pt-3 text-xs text-zinc-500">
+                            <span>{{ $item->published_at?->format('d/m/Y H:i') }}</span>
+                            <span class="truncate font-semibold text-zinc-600">{{ $item->author?->name ?? 'Punto Actual' }}</span>
+                        </div>
+                    </div>
+                </a>
+            @endforeach
+        </div>
+
+        <a href="{{ route('news.index') }}" class="btn-ghost mt-8 sm:hidden">Ver todas las noticias</a>
+    </div>
+</section>
+@endif
+
 @if($international->isNotEmpty())
 <section id="internacional" class="container-page py-16">
     <div class="mb-8 flex items-end justify-between gap-4">
@@ -192,13 +240,13 @@
 
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             @forelse($vacancies as $job)
-                <a href="{{ route('vacancies.show', $job) }}" class="group card p-5 transition duration-300 hover:-translate-y-1 hover:border-brand-500/40">
+                <a href="{{ route('vacancies.show', $job) }}" class="group card flex min-w-0 flex-col overflow-hidden p-4 transition duration-300 hover:-translate-y-1 hover:border-brand-500/40 sm:p-5">
                     @if($job->image)
                         <div class="mb-4 aspect-[16/8] overflow-hidden rounded-xl border border-black/5 bg-zinc-100">
                             <img src="{{ $job->image }}" alt="{{ $job->title }}" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                         </div>
                     @endif
-                    <div class="flex items-start gap-3">
+                    <div class="flex min-w-0 items-start gap-3">
                         <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-500/10 text-sm font-black text-brand-600 ring-1 ring-inset ring-brand-600/15">
                             {{ strtoupper(substr($job->entity?->name ?? 'PA', 0, 2)) }}
                         </div>
@@ -211,9 +259,13 @@
                         <span class="badge-red">{{ $job->employment_regime }}</span>
                         <span class="badge-soft">{{ $job->salary_label }}</span>
                     </div>
-                    <div class="mt-4 flex items-center justify-between border-t border-black/5 pt-3 text-xs text-zinc-500">
-                        <span>{{ $job->department ?: 'Perú' }}</span>
-                        <span>Cierre: {{ $job->application_end_at?->format('d/m/Y') ?? 'Ver bases' }}</span>
+                    <p class="mt-3 line-clamp-2 text-xs leading-relaxed text-zinc-600">
+                        <span class="font-semibold uppercase tracking-wider text-ink-900">Carrera:</span>
+                        {{ $job->professional_career ?: 'Revisar carreras y especialidades en las bases oficiales.' }}
+                    </p>
+                    <div class="mt-auto flex flex-col gap-1 border-t border-black/5 pt-3 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+                        <span class="min-w-0">{{ $job->department ?: 'Perú' }}</span>
+                        <span class="min-w-0 sm:text-right">Cierre: {{ $job->application_end_at?->format('d/m/Y') ?? 'Ver bases' }}</span>
                     </div>
                 </a>
             @empty
