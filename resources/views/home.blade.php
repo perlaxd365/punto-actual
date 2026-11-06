@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Punto Actual | Últimas noticias del Perú y empleos')
-@section('description', 'Noticias actuales del Perú y el mundo: política, economía, deportes, espectáculos, tecnología, regiones y convocatorias de empleo verificadas. Información actualizada al minuto.')
+@section('title', 'Punto Actual | Últimas noticias del Perú, empleos y cursos')
+@section('description', 'Noticias actuales del Perú y el mundo: política, economía, deportes, espectáculos, tecnología, regiones, convocatorias de empleo verificadas y cursos recomendados para mejorar el aprendizaje y la empleabilidad en el Perú.')
 
 @php
     $pool = $coverNews->isNotEmpty() ? $coverNews : $featured->merge($latest);
@@ -173,6 +173,27 @@
     </div>
 </section>
 
+{{-- Cursos recomendados --}}
+@if($courses->isNotEmpty())
+<section class="border-t border-black/10">
+    <div class="container-page py-8">
+        @include('partials.section-heading', ['title' => 'Cursos recomendados', 'link' => route('courses.index'), 'linkLabel' => 'Ver todos'])
+        <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
+            <p class="max-w-2xl text-sm leading-relaxed text-zinc-600">
+                Recomendamos cursos para mejorar el aprendizaje en el Perú y cerrar brechas de habilidades.
+                Explora formación en Excel, inglés, programación, marketing digital, oficios y más.
+            </p>
+            <a href="{{ route('courses.index') }}" class="btn-ghost !px-4 !py-2">Explorar directorio de cursos</a>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach($courses as $course)
+                @include('partials.course-card', ['course' => $course])
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
 {{-- Ciudades y temas --}}
 <section id="regiones" class="container-page py-8">
     <div class="grid gap-6 lg:grid-cols-2">
@@ -205,7 +226,9 @@
             <p class="mt-2 text-sm leading-relaxed text-zinc-600">
                 Punto Actual reúne las últimas noticias del Perú y el mundo: política, economía, sociedad, deportes,
                 espectáculos, tecnología y cobertura regional. Además publicamos convocatorias de empleo verificadas
-                (CAS, 728, 276, Servicio Civil y prácticas) con enlaces a las bases oficiales. Sigue la actualidad de
+                (CAS, 728, 276, Servicio Civil y prácticas) con enlaces a las bases oficiales. También recomendamos
+                cursos y programas de formación para mejorar el aprendizaje en el Perú y ampliar las oportunidades
+                laborales. Sigue la actualidad de
                 @foreach($cities->take(6) as $city)
                     <a href="{{ route('news.city', \Illuminate\Support\Str::slug($city)) }}" class="font-semibold text-brand-600 hover:text-brand-700">{{ $city }}</a>{{ ! $loop->last ? ', ' : '.' }}
                 @endforeach
@@ -219,6 +242,7 @@
             <a href="{{ route('categories.show', 'deportes') }}" class="rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-semibold text-zinc-600 transition hover:border-brand-500/40 hover:text-brand-700">Deportes</a>
             <a href="{{ route('news.international') }}" class="rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-semibold text-zinc-600 transition hover:border-brand-500/40 hover:text-brand-700">Internacional</a>
             <a href="{{ route('vacancies.index') }}" class="rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-semibold text-zinc-600 transition hover:border-brand-500/40 hover:text-brand-700">Empleos</a>
+            <a href="{{ route('courses.index') }}" class="rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-semibold text-zinc-600 transition hover:border-brand-500/40 hover:text-brand-700">Cursos</a>
         </div>
     </div>
 </section>

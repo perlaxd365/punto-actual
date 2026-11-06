@@ -16,6 +16,8 @@ class CloudinaryImageService
 
     public const FOLDER_VACANCIES = self::ROOT.'/convocatorias';
 
+    public const FOLDER_COURSES = self::ROOT.'/cursos';
+
     protected ?Cloudinary $client = null;
 
     protected function client(): Cloudinary

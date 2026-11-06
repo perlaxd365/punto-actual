@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Sobre nosotros y fundadores | Punto Actual')
-@section('description', 'Conoce a Punto Actual, el portal peruano de noticias y convocatorias laborales. Fundado por Raúl Baca y Perla García.')
+@section('description', 'Conoce a Punto Actual, el portal peruano de noticias, convocatorias laborales y cursos recomendados para mejorar el aprendizaje en el Perú. Fundado por Raúl Baca y Perla García.')
 
 @section('content')
 <div class="relative overflow-hidden border-b border-black/10 bg-[#f4f1ee]">
@@ -9,7 +9,7 @@
     <div class="container-page relative py-14 sm:py-20">
         <p class="section-label">Institucional</p>
         <h1 class="mt-2 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">Sobre Punto Actual</h1>
-        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-zinc-600">Somos un portal peruano independiente que reúne noticias verificadas y convocatorias laborales de todo el país, con contexto y enlaces a las fuentes oficiales.</p>
+        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-zinc-600">Somos un portal peruano independiente que reúne noticias verificadas, convocatorias laborales y cursos recomendados de todo el país, con contexto y enlaces a las fuentes oficiales.</p>
     </div>
 </div>
 
@@ -22,14 +22,16 @@
                 <div class="mt-4 space-y-4 text-base leading-relaxed text-zinc-600">
                     <p>Punto Actual nació con el objetivo de acercar la actualidad nacional y las oportunidades laborales a todos los peruanos, sin ruido y con información contrastada. Publicamos noticias de política, economía, sociedad, regiones, deportes e internacional, además de convocatorias del Estado y del sector privado.</p>
                     <p>Cada convocatoria incluye la carrera o especialidad requerida, requisitos, remuneración, ubicación y fecha de cierre, y siempre enlaza a la fuente oficial para que el postulante verifique las bases antes de aplicar.</p>
+                    <p>También recomendamos cursos y programas de formación para mejorar el aprendizaje en el Perú, cerrar brechas de habilidades y ampliar las oportunidades de empleo. Nuestro directorio de cursos prioriza áreas demandadas como tecnología, idiomas, negocios, diseño, oficios y gastronomía.</p>
                 </div>
             </div>
 
-            <div class="grid gap-4 sm:grid-cols-3">
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 @foreach([
                     ['Noticias verificadas', 'Contenido con contexto, autoría y enlace a la fuente original.'],
                     ['Convocatorias claras', 'Carrera, requisitos, salario y fecha límite visibles en cada ficha.'],
-                    ['Cobertura nacional', 'Noticias y empleos de costa, sierra y selva, actualizados a diario.'],
+                    ['Cursos recomendados', 'Formación en áreas demandadas para mejorar la empleabilidad.'],
+                    ['Cobertura nacional', 'Noticias, empleos y cursos de costa, sierra y selva, actualizados a diario.'],
                 ] as [$title, $text])
                     <div class="card p-5">
                         <div class="h-1 w-10 rounded-full bg-brand-500"></div>
@@ -70,7 +72,7 @@
             <div class="rounded-3xl border border-brand-500/20 bg-gradient-to-br from-brand-50 via-white to-white p-6 sm:p-8">
                 <p class="section-label">Nuestro compromiso</p>
                 <h2 class="mt-2 text-2xl font-black tracking-tight">Periodismo útil, sin sensacionalismo</h2>
-                <p class="mt-3 text-base leading-relaxed text-zinc-600">Creemos en la información que ayuda a tomar decisiones: entender lo que pasa en el país y encontrar una oportunidad laboral con datos completos. No mostramos convocatorias vencidas como vigentes y siempre atribuimos la fuente.</p>
+                <p class="mt-3 text-base leading-relaxed text-zinc-600">Creemos en la información que ayuda a tomar decisiones: entender lo que pasa en el país, encontrar una oportunidad laboral con datos completos y acceder a formación que mejore el aprendizaje. No mostramos convocatorias vencidas como vigentes y siempre atribuimos la fuente.</p>
             </div>
         </div>
 
@@ -83,6 +85,7 @@
                     <a href="{{ route('pages.terminos') }}" class="transition hover:text-brand-700">Términos y condiciones</a>
                     <a href="{{ route('news.index') }}" class="transition hover:text-brand-700">Noticias</a>
                     <a href="{{ route('vacancies.index') }}" class="transition hover:text-brand-700">Convocatorias</a>
+                    <a href="{{ route('courses.index') }}" class="transition hover:text-brand-700">Cursos</a>
                 </nav>
             </div>
         </aside>

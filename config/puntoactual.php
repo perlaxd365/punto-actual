@@ -12,7 +12,7 @@ return [
 
     'site' => [
         'name' => env('APP_NAME', 'Punto Actual'),
-        'tagline' => env('SITE_TAGLINE', 'Noticias y empleos del Perǧ'),
+        'tagline' => env('SITE_TAGLINE', 'Noticias, empleos y cursos del Perú'),
         'default_image' => env('SITE_DEFAULT_IMAGE'),
         'email' => env('SITE_EMAIL', 'administracion@brevare.com'),
         'phone' => env('SITE_PHONE', '+51902517849'),

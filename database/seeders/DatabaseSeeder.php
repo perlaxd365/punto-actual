@@ -251,5 +251,7 @@ class DatabaseSeeder extends Seeder
                 'cover_at' => now()->subMinutes($index),
             ]);
         }
+
+        $this->call(CourseSeeder::class);
     }
 }

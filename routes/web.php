@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\VacancyController as AdminVacancyController;
 use App\Http\Controllers\Admin\EntityController as AdminEntityController;
+use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\SubscriberController;
 use App\Http\Controllers\Admin\NewsletterCampaignController;
 use App\Http\Controllers\Admin\TeamController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OgImageController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\VacancyController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\SeoController;
@@ -57,6 +59,7 @@ Route::get('/', function () {
         'latest' => News::published()->with('category')->latest('published_at')->take(9)->get(),
         'sections' => $sections,
         'vacancies' => \App\Models\Vacancy::published()->with('entity')->latest('published_at')->take(6)->get(),
+        'courses' => \App\Models\Course::published()->with('entity')->orderByDesc('is_featured')->latest('published_at')->take(6)->get(),
         'categories' => Category::orderBy('name')->get(),
         'cities' => News::published()->whereNotNull('city')->where('city', '!=', '')->select('city')->distinct()->orderBy('city')->pluck('city'),
     ]);
@@ -70,6 +73,9 @@ Route::get('/og/noticia/{news:slug}', [OgImageController::class, 'news'])->name(
 Route::get('/empleos', [VacancyController::class, 'index'])->name('vacancies.index');
 Route::get('/empleos/{vacancy:slug}', [VacancyController::class, 'show'])->name('vacancies.show');
 Route::get('/og/empleo/{vacancy:slug}', [OgImageController::class, 'vacancy'])->name('og.vacancy');
+Route::get('/cursos', [CourseController::class, 'index'])->name('courses.index');
+Route::get('/cursos/institucion/{entity:slug}', [CourseController::class, 'provider'])->name('courses.provider');
+Route::get('/cursos/{course:slug}', [CourseController::class, 'show'])->name('courses.show');
 Route::get('/entidades/{entity:slug}', [EntityController::class, 'show'])->name('entities.show');
 Route::get('/categoria/{category:slug}', [NewsController::class, 'category'])->name('categories.show');
 Route::view('/nosotros', 'pages.nosotros')->name('pages.nosotros');
@@ -170,6 +176,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('noticias', AdminNewsController::class)->except(['show'])->names('news');
     Route::resource('convocatorias', AdminVacancyController::class)->except(['show'])->names('vacancies');
     Route::resource('entidades', AdminEntityController::class)->except(['show'])->names('entities');
+    Route::resource('cursos', AdminCourseController::class)->except(['show'])->names('courses');
 
     Route::get('suscriptores', [SubscriberController::class, 'index'])->name('subscribers.index');
     Route::get('suscriptores/exportar', [SubscriberController::class, 'export'])->name('subscribers.export');

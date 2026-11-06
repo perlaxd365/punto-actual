@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', config('puntoactual.site.name').' | '.config('puntoactual.site.tagline'))</title>
-    <meta name="description" content="@yield('description', 'Noticias del Perú y convocatorias laborales verificadas.')">
+    <meta name="description" content="@yield('description', 'Noticias del Perú, convocatorias laborales verificadas y cursos recomendados para mejorar el aprendizaje en el Perú.')">
     <meta name="robots" content="@yield('robots', 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1')">
     <meta name="theme-color" content="#ffffff">
     <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('favicon-48.png') }}">
@@ -110,6 +110,7 @@
                 <a href="{{ route('news.index') }}" class="transition hover:text-brand-700">Noticias</a>
                 <a href="{{ route('news.international') }}" class="transition hover:text-brand-700">Internacional</a>
                 <a href="{{ route('vacancies.index') }}" class="transition hover:text-brand-700">Empleos</a>
+                <a href="{{ route('courses.index') }}" class="transition hover:text-brand-700">Cursos</a>
                 <a href="{{ route('home') }}#regiones" class="transition hover:text-brand-700">Ciudades</a>
                 <a href="{{ route('home') }}#actualidad" class="transition hover:text-brand-700">Actualidad</a>
             </nav>
@@ -132,6 +133,7 @@
         <div class="border-t border-black/5 bg-white">
             <div class="container-page flex items-center gap-5 overflow-x-auto py-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-600">
                 <a href="{{ route('news.index') }}" class="whitespace-nowrap text-brand-600 transition hover:text-brand-700">Actualidad</a>
+                <a href="{{ route('courses.index') }}" class="whitespace-nowrap text-brand-600 transition hover:text-brand-700">Cursos</a>
                 @foreach([
                     'Política' => 'politica',
                     'Economía' => 'economia',
@@ -157,7 +159,7 @@
         <div class="container-page grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
             <div>
                 <img src="{{ asset('images/logo-punto-actual.png') }}" alt="Punto Actual" class="h-9 w-auto" width="1668" height="353">
-                <p class="mt-4 max-w-sm text-sm leading-relaxed text-zinc-600">Noticias y oportunidades laborales de todo el Perú, en un solo lugar. Información verificada y enlaces a las fuentes oficiales.</p>
+                <p class="mt-4 max-w-sm text-sm leading-relaxed text-zinc-600">Noticias, oportunidades laborales y cursos recomendados de todo el Perú, en un solo lugar. Información verificada y enlaces a las fuentes oficiales.</p>
                 <div class="mt-5">@include('partials.social')</div>
 
                 <form method="post" action="{{ route('newsletter.store') }}" class="mt-6 max-w-sm">
@@ -181,6 +183,7 @@
                     <a href="{{ route('news.index') }}" class="transition hover:text-brand-700">Noticias</a>
                     <a href="{{ route('news.international') }}" class="transition hover:text-brand-700">Internacional</a>
                     <a href="{{ route('vacancies.index') }}" class="transition hover:text-brand-700">Convocatorias</a>
+                    <a href="{{ route('courses.index') }}" class="transition hover:text-brand-700">Cursos</a>
                     <a href="{{ route('home') }}#regiones" class="transition hover:text-brand-700">Regiones</a>
                     <a href="{{ route('sitemap') }}" class="transition hover:text-brand-700">Sitemap</a>
                     <a href="{{ route('feed') }}" class="transition hover:text-brand-700">RSS</a>

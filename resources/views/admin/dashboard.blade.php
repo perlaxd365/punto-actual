@@ -37,11 +37,12 @@
         </div>
     </div>
 
-    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
         @foreach([
             ['Noticias', $newsCount, 'Noticias publicadas y borradores'],
             ['Convocatorias', $vacancyCount, 'Ofertas registradas'],
             ['Entidades', $entityCount, 'Instituciones en el directorio'],
+            ['Cursos', $courseCount, 'Cursos en el directorio'],
             ['Borradores laborales', $pending, 'Convocatorias por publicar'],
             ['Suscriptores', $subscriberCount ?? 0, 'Boletín activo'],
         ] as [$label, $value, $hint])
@@ -66,6 +67,10 @@
             <span class="font-bold text-ink-950 transition group-hover:text-brand-600">Gestionar entidades</span>
             <span class="text-brand-500">→</span>
         </a>
+        <a class="group card flex items-center justify-between p-6 transition hover:border-brand-500/40" href="{{ route('admin.courses.index') }}">
+            <span class="font-bold text-ink-950 transition group-hover:text-brand-600">Gestionar cursos</span>
+            <span class="text-brand-500">→</span>
+        </a>
         <a class="group card flex items-center justify-between p-6 transition hover:border-brand-500/40" href="{{ route('admin.subscribers.index') }}">
             <span class="font-bold text-ink-950 transition group-hover:text-brand-600">Suscriptores</span>
             <span class="text-brand-500">→</span>
@@ -85,7 +90,7 @@
     </div>
 
     <div class="mt-8 rounded-2xl border border-black/10 bg-white p-5 text-sm text-zinc-600">
-        Las noticias publicadas se envían automáticamente a Google mediante la Indexing API. Configura
+        Las noticias, convocatorias y cursos publicados se envían automáticamente a Google mediante la Indexing API. Configura
         <code class="rounded bg-zinc-100 px-1.5 py-0.5 text-brand-600">GOOGLE_INDEXING_ENABLED</code> y
         <code class="rounded bg-zinc-100 px-1.5 py-0.5 text-brand-600">GOOGLE_APPLICATION_CREDENTIALS</code> para activarlo.
     </div>

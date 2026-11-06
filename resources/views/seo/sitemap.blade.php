@@ -4,6 +4,7 @@
     <url><loc>{{ route('home') }}</loc></url>
     <url><loc>{{ route('news.index') }}</loc></url>
     <url><loc>{{ route('vacancies.index') }}</loc></url>
+    <url><loc>{{ route('courses.index') }}</loc></url>
     <url><loc>{{ route('news.international') }}</loc></url>
     <url><loc>{{ route('pages.nosotros') }}</loc></url>
     <url><loc>{{ route('pages.editorial') }}</loc></url>
@@ -39,6 +40,17 @@
         <url>
             <loc>{{ route('vacancies.show', $job->slug) }}</loc>
             <lastmod>{{ $job->updated_at->toAtomString() }}</lastmod>
+        </url>
+    @endforeach
+    @foreach($courses->pluck('entity')->filter()->unique('id') as $provider)
+        <url>
+            <loc>{{ route('courses.provider', $provider->slug) }}</loc>
+        </url>
+    @endforeach
+    @foreach($courses as $course)
+        <url>
+            <loc>{{ route('courses.show', $course->slug) }}</loc>
+            <lastmod>{{ $course->updated_at->toAtomString() }}</lastmod>
         </url>
     @endforeach
 </urlset>
