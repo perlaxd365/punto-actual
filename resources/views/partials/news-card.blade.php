@@ -28,13 +28,16 @@
         </div>
     </a>
 @elseif($variant === 'horizontal')
-    <a href="{{ $href }}" class="group flex gap-3 rounded-xl border border-black/[0.06] bg-white p-2.5 transition hover:border-brand-500/40 hover:bg-black/[0.015]">
-        <div class="h-20 w-28 shrink-0 overflow-hidden rounded-lg bg-zinc-100 sm:h-24 sm:w-32">
+    <a href="{{ $href }}" class="group flex gap-3 rounded-xl border border-black/[0.06] bg-white p-2.5 transition duration-300 hover:-translate-y-0.5 hover:border-brand-500/40 hover:bg-brand-50/20 hover:shadow-[0_18px_40px_-32px_rgba(0,0,0,0.4)]">
+        <div class="relative h-20 w-28 shrink-0 overflow-hidden rounded-lg bg-zinc-100 sm:h-24 sm:w-32">
             @if($item->image)
                 <img src="{{ $item->image }}" alt="{{ $item->title }}" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
             @else
                 <div class="flex h-full items-center justify-center bg-gradient-to-br from-brand-100 to-zinc-100 text-xl font-black text-black/10">PA</div>
             @endif
+            @isset($rank)
+                <span class="absolute left-1.5 top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-brand-600 text-[10px] font-black text-white shadow-sm">{{ $rank }}</span>
+            @endisset
         </div>
         <div class="min-w-0 py-0.5">
             <span class="text-[10px] font-bold uppercase tracking-wider text-brand-600">{{ $categoryName }}</span>
@@ -54,7 +57,7 @@
         </div>
     </a>
 @else
-    <a href="{{ $href }}" class="group flex flex-col overflow-hidden rounded-xl border border-black/[0.07] bg-white transition duration-300 hover:-translate-y-0.5 hover:border-brand-500/40 hover:shadow-[0_18px_40px_-28px_rgba(0,0,0,0.5)]">
+    <a href="{{ $href }}" class="group flex flex-col overflow-hidden rounded-xl border border-black/[0.07] bg-white transition duration-300 hover:-translate-y-1 hover:border-brand-500/40 hover:shadow-[0_24px_50px_-32px_rgba(0,0,0,0.45)]">
         <div class="aspect-[16/10] overflow-hidden bg-zinc-100">
             @if($item->image)
                 <img src="{{ $item->image }}" alt="{{ $item->title }}" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]">

@@ -40,18 +40,19 @@
 <h1 class="sr-only">Últimas noticias del Perú y el mundo | Punto Actual</h1>
 {{-- Ticker de última hora --}}
 @if($ticker->isNotEmpty())
-<div class="border-b border-black/10 bg-brand-600 text-white">
-    <div class="container-page flex items-center gap-3 py-2">
-        <span class="flex shrink-0 items-center gap-1.5 rounded bg-white/15 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider">
+<div class="border-b border-black/10 bg-white">
+    <div class="container-page flex items-center gap-3 py-2.5">
+        <span class="flex shrink-0 items-center gap-1.5 rounded-full bg-brand-600 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-white">
             <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-white"></span> Última hora
         </span>
         <div class="ticker-viewport min-w-0 flex-1" data-ticker>
             <div class="ticker-stack">
                 @foreach($ticker as $item)
-                    <a href="{{ route('news.show', $item) }}" data-ticker-item class="ticker-item text-[13px] font-semibold transition hover:text-white/80 {{ $loop->first ? 'is-active' : '' }}">{{ $item->title }}</a>
+                    <a href="{{ route('news.show', $item) }}" data-ticker-item class="ticker-item text-[13px] font-semibold text-ink-950 transition hover:text-brand-600 {{ $loop->first ? 'is-active' : '' }}">{{ $item->title }}</a>
                 @endforeach
             </div>
         </div>
+        <a href="{{ route('news.index') }}" class="hidden shrink-0 text-[11px] font-bold uppercase tracking-wider text-brand-600 transition hover:text-brand-700 sm:inline">Ver más →</a>
     </div>
 </div>
 @endif
@@ -87,7 +88,7 @@
                 @include('partials.section-heading', ['title' => 'Lo último', 'link' => route('news.index'), 'linkLabel' => 'Ver más'])
                 <div class="mt-1">
                     @foreach($latest->take(6) as $item)
-                        @include('partials.news-card', ['item' => $item, 'variant' => 'list'])
+                        @include('partials.news-card', ['item' => $item, 'variant' => 'list', 'position' => $loop->iteration])
                     @endforeach
                 </div>
             </div>
@@ -106,11 +107,13 @@
 
 {{-- Actualidad --}}
 @if($topStories->isNotEmpty())
-<div class="container-page py-6" data-reveal>
+<div class="container-page py-8" data-reveal>
     @include('partials.section-heading', ['title' => 'Actualidad', 'link' => route('news.index'), 'linkLabel' => 'Ver todas'])
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         @foreach($topStories->take(6) as $item)
-            @include('partials.news-card', ['item' => $item, 'variant' => 'grid'])
+            <div data-reveal style="--reveal-delay: {{ ($loop->index % 3) * 70 }}ms">
+                @include('partials.news-card', ['item' => $item, 'variant' => 'grid'])
+            </div>
         @endforeach
     </div>
 </div>
@@ -119,7 +122,7 @@
 {{-- Secciones por categoría (estilo RPP) --}}
 @foreach($sections as $section)
     <section class="border-t border-black/10">
-        <div class="container-page py-6" data-reveal>
+        <div class="container-page py-8" data-reveal>
             @include('partials.section-heading', [
                 'title' => $section->category->name,
                 'link' => route('categories.show', $section->category),
@@ -127,13 +130,15 @@
             ])
             @php($first = $section->items->first())
             @php($rest = $section->items->skip(1)->take(3))
-            <div class="grid gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-                <div class="min-w-0">
-                    @include('partials.news-card', ['item' => $first, 'variant' => 'horizontal'])
+            <div class="grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+                <div class="min-w-0" data-reveal>
+                    @include('partials.news-feature-card', ['item' => $first])
                 </div>
                 <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
                     @foreach($rest as $item)
-                        @include('partials.news-card', ['item' => $item, 'variant' => 'horizontal'])
+                        <div data-reveal style="--reveal-delay: {{ $loop->index * 70 }}ms">
+                            @include('partials.news-card', ['item' => $item, 'variant' => 'horizontal', 'rank' => $loop->iteration])
+                        </div>
                     @endforeach
                 </div>
             </div>
