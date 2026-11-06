@@ -116,9 +116,57 @@ function initSliders() {
     });
 }
 
+function initReveal() {
+    const elements = Array.from(document.querySelectorAll('[data-reveal]'));
+
+    if (! elements.length) {
+        return;
+    }
+
+    const revealAll = () => elements.forEach((element) => element.classList.add('is-visible'));
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || ! ('IntersectionObserver' in window)) {
+        revealAll();
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+
+    elements.forEach((element) => observer.observe(element));
+
+    window.setTimeout(revealAll, 3000);
+}
+
+function initScrollProgress() {
+    const bar = document.getElementById('scroll-progress');
+
+    if (! bar) {
+        return;
+    }
+
+    const update = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+        bar.style.transform = `scaleX(${progress})`;
+    };
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+}
+
 function initInteractive() {
     initCarousels();
     initSliders();
+    initReveal();
+    initScrollProgress();
 }
 
 if (document.readyState === 'loading') {

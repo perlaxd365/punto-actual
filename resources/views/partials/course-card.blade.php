@@ -5,10 +5,11 @@
     $initials = mb_strtoupper(mb_substr($provider?->name ?? 'PA', 0, 2));
     $image = $course->display_image;
     $isFallback = ! $course->image;
+    $delay = $delay ?? 0;
 @endphp
 
 @if($variant === 'list')
-    <a href="{{ $href }}" class="group flex items-start gap-3 border-b border-black/[0.06] py-3 last:border-0">
+    <a href="{{ $href }}" data-reveal style="--reveal-delay: {{ $delay }}ms" class="group flex items-start gap-3 border-b border-black/[0.06] py-3 last:border-0">
         <div class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-brand-500/10 text-xs font-black text-brand-600 ring-1 ring-inset ring-brand-600/15">
             @if($provider?->logo)
                 <img src="{{ $provider->logo }}" alt="{{ $provider->name }}" loading="lazy" class="h-full w-full object-cover">
@@ -25,7 +26,7 @@
         </div>
     </a>
 @else
-    <a href="{{ $href }}" class="group flex flex-col overflow-hidden rounded-xl border border-black/[0.07] bg-white transition duration-300 hover:-translate-y-0.5 hover:border-brand-500/40 hover:shadow-[0_18px_40px_-28px_rgba(0,0,0,0.5)]">
+    <a href="{{ $href }}" data-reveal style="--reveal-delay: {{ $delay }}ms" class="group flex flex-col overflow-hidden rounded-xl border border-black/[0.07] bg-white transition duration-300 hover:-translate-y-0.5 hover:border-brand-500/40 hover:shadow-[0_18px_40px_-28px_rgba(0,0,0,0.5)]">
         <div class="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-brand-600 via-brand-700 to-ink-950">
             @if($image)
                 <img src="{{ $image }}" alt="{{ $course->title }}" loading="lazy" class="h-full w-full transition duration-500 group-hover:scale-[1.04] {{ $isFallback ? 'object-contain bg-white p-8' : 'object-cover' }}">

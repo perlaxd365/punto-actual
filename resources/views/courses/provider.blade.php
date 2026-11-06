@@ -89,7 +89,7 @@
     @else
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             @foreach($courses as $course)
-                @include('partials.course-card', ['course' => $course])
+                @include('partials.course-card', ['course' => $course, 'delay' => ($loop->index % 3) * 80])
             @endforeach
         </div>
         <div class="mt-8">{{ $courses->links() }}</div>

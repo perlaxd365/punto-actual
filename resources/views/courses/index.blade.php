@@ -112,7 +112,7 @@
             @else
                 <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                     @foreach($courses as $course)
-                        @include('partials.course-card', ['course' => $course])
+                        @include('partials.course-card', ['course' => $course, 'delay' => ($loop->index % 3) * 80])
                     @endforeach
                 </div>
                 <div class="mt-8">{{ $courses->links() }}</div>
@@ -132,7 +132,7 @@
                 <div class="rounded-2xl border border-black/[0.08] bg-zinc-50/80 p-4">
                     @include('partials.section-heading', ['title' => 'Cursos destacados', 'link' => route('courses.index')])
                     @foreach($featured as $course)
-                        @include('partials.course-card', ['course' => $course, 'variant' => 'list'])
+                        @include('partials.course-card', ['course' => $course, 'variant' => 'list', 'delay' => ($loop->index % 4) * 60])
                     @endforeach
                 </div>
             @endif

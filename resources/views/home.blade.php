@@ -45,19 +45,27 @@
         <span class="flex shrink-0 items-center gap-1.5 rounded bg-white/15 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider">
             <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-white"></span> Última hora
         </span>
-        <div class="flex min-w-0 flex-1 gap-6 overflow-x-auto text-[13px] font-semibold [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            @foreach($ticker as $item)
-                <a href="{{ route('news.show', $item) }}" class="whitespace-nowrap transition hover:text-white/80">{{ $item->title }}</a>
-            @endforeach
+        <div class="ticker-mask min-w-0 flex-1">
+            <div class="ticker-track items-center gap-8 text-[13px] font-semibold">
+                @foreach($ticker as $item)
+                    <a href="{{ route('news.show', $item) }}" class="shrink-0 whitespace-nowrap transition hover:text-white/80">{{ $item->title }}</a>
+                @endforeach
+                @foreach($ticker as $item)
+                    <a href="{{ route('news.show', $item) }}" class="shrink-0 whitespace-nowrap transition hover:text-white/80" aria-hidden="true" tabindex="-1">{{ $item->title }}</a>
+                @endforeach
+            </div>
         </div>
     </div>
 </div>
 @endif
 
-<div class="container-page py-6 lg:py-8">
+<div class="container-page relative overflow-hidden py-6 lg:py-8">
+    <div class="hero-float pointer-events-none absolute -right-16 top-4 h-56 w-56 rounded-full bg-brand-500/10 blur-3xl"></div>
+    <div class="hero-float pointer-events-none absolute -left-20 bottom-0 h-64 w-64 rounded-full bg-brand-600/10 blur-3xl" style="animation-delay:-7s"></div>
+
     {{-- Hero: titular + últimas --}}
-    <div class="grid gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,3fr)]">
-        <div class="min-w-0">
+    <div class="relative grid gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,3fr)]">
+        <div class="min-w-0" data-reveal>
             @if($lead)
                 @include('partials.news-card', ['item' => $lead, 'variant' => 'lead'])
                 @if($heroSide->isNotEmpty())
@@ -77,7 +85,7 @@
             @endif
         </div>
 
-        <aside class="min-w-0">
+        <aside class="min-w-0" data-reveal style="--reveal-delay:140ms">
             <div class="rounded-2xl border border-black/[0.08] bg-zinc-50/80 p-4">
                 @include('partials.section-heading', ['title' => 'Lo último', 'link' => route('news.index'), 'linkLabel' => 'Ver más'])
                 <div class="mt-1">
@@ -101,7 +109,7 @@
 
 {{-- Actualidad --}}
 @if($topStories->isNotEmpty())
-<div class="container-page py-6">
+<div class="container-page py-6" data-reveal>
     @include('partials.section-heading', ['title' => 'Actualidad', 'link' => route('news.index'), 'linkLabel' => 'Ver todas'])
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         @foreach($topStories->take(6) as $item)
@@ -114,7 +122,7 @@
 {{-- Secciones por categoría (estilo RPP) --}}
 @foreach($sections as $section)
     <section class="border-t border-black/10">
-        <div class="container-page py-6">
+        <div class="container-page py-6" data-reveal>
             @include('partials.section-heading', [
                 'title' => $section->category->name,
                 'link' => route('categories.show', $section->category),
@@ -138,11 +146,11 @@
 
 {{-- Convocatorias --}}
 <section class="border-t border-black/10 bg-zinc-50">
-    <div class="container-page py-8">
+    <div class="container-page py-8" data-reveal>
         @include('partials.section-heading', ['title' => 'Empleos y convocatorias', 'link' => route('vacancies.index'), 'linkLabel' => 'Ver todas'])
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             @forelse($vacancies as $job)
-                <a href="{{ route('vacancies.show', $job) }}" class="group flex flex-col rounded-xl border border-black/[0.07] bg-white p-4 transition duration-300 hover:-translate-y-0.5 hover:border-brand-500/40">
+                <a href="{{ route('vacancies.show', $job) }}" data-reveal style="--reveal-delay: {{ $loop->index * 70 }}ms" class="group flex flex-col rounded-xl border border-black/[0.07] bg-white p-4 transition duration-300 hover:-translate-y-0.5 hover:border-brand-500/40">
                     <div class="flex min-w-0 items-start gap-3">
                         <div class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-brand-500/10 text-sm font-black text-brand-600 ring-1 ring-inset ring-brand-600/15">
                             @if($job->entity?->logo)
@@ -176,7 +184,7 @@
 {{-- Cursos recomendados --}}
 @if($courses->isNotEmpty())
 <section class="border-t border-black/10">
-    <div class="container-page py-8">
+    <div class="container-page py-8" data-reveal>
         @include('partials.section-heading', ['title' => 'Cursos recomendados', 'link' => route('courses.index'), 'linkLabel' => 'Ver todos'])
         <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
             <p class="max-w-2xl text-sm leading-relaxed text-zinc-600">
@@ -187,7 +195,7 @@
         </div>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             @foreach($courses as $course)
-                @include('partials.course-card', ['course' => $course])
+                @include('partials.course-card', ['course' => $course, 'delay' => ($loop->index % 3) * 80])
             @endforeach
         </div>
     </div>
@@ -195,7 +203,7 @@
 @endif
 
 {{-- Ciudades y temas --}}
-<section id="regiones" class="container-page py-8">
+<section id="regiones" class="container-page py-8" data-reveal>
     <div class="grid gap-6 lg:grid-cols-2">
         <div>
             <p class="section-label">Noticias por ciudad</p>
@@ -220,7 +228,7 @@
 </section>
 
 <section class="border-t border-black/10 bg-zinc-50">
-    <div class="container-page grid gap-6 py-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+    <div class="container-page grid gap-6 py-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]" data-reveal>
         <div>
             <h2 class="text-xl font-black tracking-tight sm:text-2xl">Noticias actuales del Perú y el mundo</h2>
             <p class="mt-2 text-sm leading-relaxed text-zinc-600">
@@ -247,7 +255,7 @@
     </div>
 </section>
 
-<section class="container-page pb-12 pt-8">
+<section class="container-page pb-12 pt-8" data-reveal>
     <div class="relative overflow-hidden rounded-2xl border border-brand-500/20 bg-gradient-to-br from-brand-50 via-white to-white p-7 sm:p-10">
         <div class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-brand-600/20 blur-3xl"></div>
         <div class="relative max-w-2xl">

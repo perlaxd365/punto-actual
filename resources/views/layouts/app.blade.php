@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>document.documentElement.classList.add('reveal-ready');</script>
     <title>@yield('title', config('puntoactual.site.name').' | '.config('puntoactual.site.tagline'))</title>
     <meta name="description" content="@yield('description', 'Noticias del Perú, convocatorias laborales verificadas y cursos recomendados para mejorar el aprendizaje en el Perú.')">
     <meta name="robots" content="@yield('robots', 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1')">
@@ -98,6 +99,7 @@
     @include('partials.adsense-head')
 </head>
 <body class="min-h-screen bg-white text-ink-950 antialiased">
+    <div id="scroll-progress" class="scroll-progress fixed inset-x-0 top-0 z-[60] h-0.5 bg-brand-600"></div>
     @include('partials.analytics-body')
     <header class="sticky top-0 z-50 border-b border-black/10 bg-white/85 backdrop-blur-xl">
         <div class="h-0.5 w-full bg-gradient-to-r from-brand-700 via-brand-500 to-brand-700"></div>

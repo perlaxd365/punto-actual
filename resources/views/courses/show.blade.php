@@ -60,30 +60,48 @@
 @endpush
 
 @section('content')
-<div class="border-b border-black/10 bg-zinc-50">
-    <div class="container-page py-5 sm:py-7">
+<div class="relative overflow-hidden border-b border-black/10 bg-gradient-to-br from-brand-50 via-white to-white">
+    <div class="hero-float pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-brand-500/15 blur-3xl"></div>
+    <div class="hero-float pointer-events-none absolute -left-24 bottom-0 h-64 w-64 rounded-full bg-brand-600/10 blur-3xl" style="animation-delay:-8s"></div>
+
+    <div class="container-page relative py-6 sm:py-10">
         @include('partials.breadcrumbs', ['items' => $crumbs])
-        <div class="mt-3 grid gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,3fr)]">
-            <div>
-                <p class="section-label">{{ $course->area }}</p>
-                <h1 class="mt-1 text-3xl font-black leading-tight tracking-tight sm:text-4xl">{{ $course->title }}</h1>
-                @if($course->excerpt)
-                    <p class="mt-3 max-w-3xl text-base leading-relaxed text-zinc-600">{{ $course->excerpt }}</p>
-                @endif
 
-                @if($displayImage)
-                    <div class="mt-4 overflow-hidden rounded-2xl border border-black/10 bg-zinc-100">
-                        <img src="{{ $displayImage }}" alt="{{ $course->title }}" class="aspect-[16/9] w-full {{ $course->image ? 'object-cover' : 'object-contain bg-white p-10' }}">
-                    </div>
-                @endif
-
-                <div class="mt-4 flex flex-wrap gap-2">
-                    @if($course->modality)<span class="badge-soft">{{ $course->modality }}</span>@endif
-                    @if($course->level)<span class="badge-soft">{{ $course->level }}</span>@endif
-                    @if($course->duration)<span class="badge-soft">{{ $course->duration }}</span>@endif
+        <div class="mt-4 grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center">
+            <div data-reveal>
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="badge-red">{{ $course->area }}</span>
+                    @if($course->is_featured)
+                        <span class="badge-soft">Destacado</span>
+                    @endif
                 </div>
 
-                <div class="mt-5 flex flex-wrap items-center gap-3">
+                <h1 class="mt-4 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl">{{ $course->title }}</h1>
+
+                @if($course->excerpt)
+                    <p class="mt-4 max-w-xl text-lg leading-relaxed text-zinc-600">{{ $course->excerpt }}</p>
+                @endif
+
+                <dl class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    <div class="rounded-xl border border-black/10 bg-white/80 p-3 backdrop-blur">
+                        <dt class="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Modalidad</dt>
+                        <dd class="mt-1 text-sm font-black text-ink-950">{{ $course->modality ?: 'Consultar' }}</dd>
+                    </div>
+                    <div class="rounded-xl border border-black/10 bg-white/80 p-3 backdrop-blur">
+                        <dt class="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Duración</dt>
+                        <dd class="mt-1 text-sm font-black text-ink-950">{{ $course->duration ?: 'Consultar' }}</dd>
+                    </div>
+                    <div class="rounded-xl border border-black/10 bg-white/80 p-3 backdrop-blur">
+                        <dt class="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Nivel</dt>
+                        <dd class="mt-1 text-sm font-black text-ink-950">{{ $course->level ?: 'Consultar' }}</dd>
+                    </div>
+                    <div class="rounded-xl border border-black/10 bg-white/80 p-3 backdrop-blur">
+                        <dt class="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Institución</dt>
+                        <dd class="mt-1 line-clamp-1 text-sm font-black text-ink-950">{{ $provider?->name ?? 'Punto Actual' }}</dd>
+                    </div>
+                </dl>
+
+                <div class="mt-6 flex flex-wrap items-center gap-3">
                     <a href="{{ $course->official_url }}" target="_blank" rel="noopener" class="btn-primary">Ver información oficial ↗</a>
                     @if($provider)
                         <a href="{{ route('courses.provider', $provider->slug) }}" class="btn-ghost">Más cursos de {{ $provider->name }}</a>
@@ -91,36 +109,40 @@
                 </div>
             </div>
 
-            @if($provider)
-                <div class="rounded-2xl border border-black/[0.08] bg-white p-5">
-                    <p class="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Institución</p>
-                    <div class="mt-3 flex items-center gap-3">
-                        <div class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-500/10 text-sm font-black text-brand-600 ring-1 ring-inset ring-brand-600/15">
-                            @if($provider->logo)
-                                <img src="{{ $provider->logo }}" alt="{{ $provider->name }}" class="h-full w-full object-cover">
-                            @else
-                                {{ $initials }}
-                            @endif
-                        </div>
-                        <div class="min-w-0">
-                            <p class="truncate text-sm font-black text-ink-950">{{ $provider->name }}</p>
-                            <p class="text-xs text-zinc-500">{{ $provider->entity_type }}</p>
+            <div class="relative" data-reveal style="--reveal-delay:140ms">
+                <div class="group relative overflow-hidden rounded-3xl border border-black/10 bg-zinc-100 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_30px_70px_-40px_rgba(0,0,0,0.5)]">
+                    @if($displayImage)
+                        <img src="{{ $displayImage }}" alt="{{ $course->title }}" class="aspect-[4/3] w-full transition duration-700 group-hover:scale-[1.03] {{ $course->image ? 'object-cover' : 'object-contain bg-white p-10' }}">
+                    @else
+                        <div class="flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-brand-600 via-brand-700 to-ink-950 text-6xl font-black text-white/20">{{ $initials }}</div>
+                    @endif
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent p-5">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1.5">
+                                @if($provider?->logo)
+                                    <img src="{{ $provider->logo }}" alt="{{ $provider->name }}" class="h-full w-full object-contain">
+                                @else
+                                    <span class="text-xs font-black text-brand-600">{{ $initials }}</span>
+                                @endif
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-white/70">Institución</p>
+                                <p class="truncate text-sm font-black text-white">{{ $provider?->name ?? 'Punto Actual' }}</p>
+                            </div>
                         </div>
                     </div>
-                    @if($provider->website)
-                        <a href="{{ $provider->website }}" target="_blank" rel="noopener" class="mt-4 inline-flex text-xs font-bold text-brand-600 hover:text-brand-700">Sitio oficial ↗</a>
-                    @endif
                 </div>
-            @endif
+            </div>
         </div>
     </div>
 </div>
 
-<div class="container-page py-6">
+<div class="container-page py-8">
     <div class="grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
-        <div class="min-w-0">
-            <article class="card p-6 sm:p-8">
-                <h2 class="text-2xl font-black tracking-tight">Sobre el curso</h2>
+        <div class="min-w-0 space-y-6">
+            <article class="card p-6 sm:p-8" data-reveal>
+                <p class="section-label">Contenido del curso</p>
+                <h2 class="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Sobre el curso</h2>
                 <div class="article-body mt-4 text-zinc-700">
                     @if($course->description)
                         {!! nl2br(e($course->description)) !!}
@@ -128,43 +150,91 @@
                         <p>{{ $course->excerpt }}</p>
                     @endif
                 </div>
-
-                <div class="mt-6 rounded-xl border border-black/[0.08] bg-zinc-50 p-5">
-                    <h3 class="text-sm font-black uppercase tracking-wider text-ink-950">Antes de inscribirte</h3>
-                    <ul class="mt-3 grid gap-2 text-sm text-zinc-600">
-                        <li>Verifica costos, fechas de inicio y requisitos en el sitio oficial de la institución.</li>
-                        <li>Confirma la modalidad (online, presencial o híbrida) y los horarios disponibles.</li>
-                        <li>Revisa si el curso entrega certificado y si es reconocido por el sector al que apuntas.</li>
-                    </ul>
-                </div>
-
-                <div class="mt-6 flex flex-wrap items-center gap-3">
-                    <a href="{{ $course->official_url }}" target="_blank" rel="noopener" class="btn-primary">Ir al sitio oficial del curso ↗</a>
-                    <a href="{{ route('courses.index') }}" class="btn-ghost">Ver más cursos</a>
-                </div>
-                <p class="mt-4 text-xs leading-relaxed text-zinc-500">
-                    Punto Actual recomienda este curso como parte de su directorio de formación. No gestionamos
-                    inscripciones ni cobros; toda la información oficial corresponde a la institución.
-                </p>
             </article>
+
+            <div class="grid gap-4 sm:grid-cols-3">
+                @foreach([
+                    ['Aprovecha el formato', $course->modality ? 'La modalidad '.$course->modality.' te permite organizar tu tiempo según tu rutina.' : 'Revisa la modalidad y los horarios antes de inscribirte.'],
+                    ['Verifica antes de pagar', 'Confirma costos, fechas de inicio, requisitos y formas de pago en el sitio oficial.'],
+                    ['Piensa en tu salida', 'Evalúa si el curso entrega certificado y cómo se conecta con el empleo que buscas.'],
+                ] as [$title, $text])
+                    <div class="rounded-2xl border border-black/[0.08] bg-zinc-50 p-5" data-reveal style="--reveal-delay: {{ $loop->index * 80 }}ms">
+                        <span class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-500/10 text-sm font-black text-brand-600">{{ $loop->iteration }}</span>
+                        <h3 class="mt-3 text-sm font-black text-ink-950">{{ $title }}</h3>
+                        <p class="mt-1.5 text-sm leading-relaxed text-zinc-600">{{ $text }}</p>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-600 via-brand-700 to-brand-900 p-6 text-white sm:p-8" data-reveal>
+                <div class="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-white/10 blur-2xl"></div>
+                <div class="relative">
+                    <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">Siguiente paso</p>
+                    <h2 class="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Revisa la información oficial</h2>
+                    <p class="mt-2 max-w-xl text-sm leading-relaxed text-white/80">
+                        Fechas, costos y requisitos se confirman directamente con {{ $provider?->name ?? 'la institución' }}.
+                        Punto Actual no gestiona inscripciones ni cobros.
+                    </p>
+                    <div class="mt-5 flex flex-wrap items-center gap-3">
+                        <a href="{{ $course->official_url }}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-brand-700 transition hover:bg-brand-50">
+                            Ir al sitio oficial <span class="cta-arrow">↗</span>
+                        </a>
+                        <a href="{{ route('courses.index') }}" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10">
+                            Ver más cursos
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <aside class="space-y-6 self-start lg:sticky lg:top-24">
+            @if($provider)
+                <div class="overflow-hidden rounded-2xl border border-black/[0.08] bg-white" data-reveal>
+                    <div class="bg-gradient-to-br from-brand-600 to-brand-800 p-5 text-white">
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-white/70">Institución</p>
+                        <div class="mt-3 flex items-center gap-3">
+                            <div class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1.5">
+                                @if($provider->logo)
+                                    <img src="{{ $provider->logo }}" alt="{{ $provider->name }}" class="h-full w-full object-contain">
+                                @else
+                                    <span class="text-sm font-black text-brand-600">{{ $initials }}</span>
+                                @endif
+                            </div>
+                            <div class="min-w-0">
+                                <p class="truncate text-sm font-black">{{ $provider->name }}</p>
+                                <p class="text-xs text-white/70">{{ $provider->entity_type }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        @if($provider->description)
+                            <p class="text-sm leading-relaxed text-zinc-600">{{ \Illuminate\Support\Str::limit($provider->description, 150) }}</p>
+                        @endif
+                        <div class="mt-4 grid gap-2">
+                            @if($provider->website)
+                                <a href="{{ $provider->website }}" target="_blank" rel="noopener" class="link-red text-sm">Sitio oficial ↗</a>
+                            @endif
+                            <a href="{{ route('courses.provider', $provider->slug) }}" class="link-red text-sm">Ver todos sus cursos →</a>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             @if($similar->isNotEmpty())
-                <div class="rounded-2xl border border-black/[0.08] bg-zinc-50/80 p-4">
+                <div class="rounded-2xl border border-black/[0.08] bg-zinc-50/80 p-4" data-reveal>
                     @include('partials.section-heading', ['title' => 'Cursos de '.$course->area, 'link' => route('courses.index', ['area' => $course->area])])
                     @foreach($similar as $item)
-                        @include('partials.course-card', ['course' => $item, 'variant' => 'list'])
+                        @include('partials.course-card', ['course' => $item, 'variant' => 'list', 'delay' => ($loop->index % 4) * 60])
                     @endforeach
                 </div>
             @endif
 
-            <a href="{{ route('vacancies.index') }}" class="flex items-center justify-between rounded-2xl bg-brand-600 px-5 py-4 text-white transition hover:bg-brand-500">
+            <a href="{{ route('vacancies.index') }}" class="group flex items-center justify-between rounded-2xl bg-brand-600 px-5 py-4 text-white transition hover:bg-brand-500" data-reveal>
                 <span>
                     <span class="block text-[10px] font-bold uppercase tracking-wider text-white/80">Empleos</span>
                     <span class="block text-lg font-black">Mejora tu perfil</span>
                 </span>
-                <span class="text-2xl">→</span>
+                <span class="cta-arrow text-2xl">→</span>
             </a>
         </aside>
     </div>
@@ -172,11 +242,11 @@
 
 @if($recommended->isNotEmpty())
 <section class="border-t border-black/10 bg-zinc-50">
-    <div class="container-page py-8">
+    <div class="container-page py-8" data-reveal>
         @include('partials.section-heading', ['title' => 'Otros cursos recomendados', 'link' => route('courses.index'), 'linkLabel' => 'Ver todos'])
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             @foreach($recommended->take(6) as $item)
-                @include('partials.course-card', ['course' => $item])
+                @include('partials.course-card', ['course' => $item, 'delay' => ($loop->index % 3) * 80])
             @endforeach
         </div>
     </div>
