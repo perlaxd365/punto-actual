@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Punto Actual | Últimas noticias del Perú y empleos')
-@section('description', 'Últimas noticias del Perú y el mundo, política, economía, deportes, regiones y convocatorias de empleo verificadas. Información actualizada al minuto.')
+@section('description', 'Noticias actuales del Perú y el mundo: política, economía, deportes, espectáculos, tecnología, regiones y convocatorias de empleo verificadas. Información actualizada al minuto.')
 
 @php
     $pool = $coverNews->isNotEmpty() ? $coverNews : $featured->merge($latest);
@@ -198,7 +198,32 @@
     </div>
 </section>
 
-<section class="container-page pb-12">
+<section class="border-t border-black/10 bg-zinc-50">
+    <div class="container-page grid gap-6 py-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+        <div>
+            <h2 class="text-xl font-black tracking-tight sm:text-2xl">Noticias actuales del Perú y el mundo</h2>
+            <p class="mt-2 text-sm leading-relaxed text-zinc-600">
+                Punto Actual reúne las últimas noticias del Perú y el mundo: política, economía, sociedad, deportes,
+                espectáculos, tecnología y cobertura regional. Además publicamos convocatorias de empleo verificadas
+                (CAS, 728, 276, Servicio Civil y prácticas) con enlaces a las bases oficiales. Sigue la actualidad de
+                @foreach($cities->take(6) as $city)
+                    <a href="{{ route('news.city', \Illuminate\Support\Str::slug($city)) }}" class="font-semibold text-brand-600 hover:text-brand-700">{{ $city }}</a>{{ ! $loop->last ? ', ' : '.' }}
+                @endforeach
+                Información actualizada al minuto por nuestra redacción.
+            </p>
+        </div>
+        <div class="flex flex-wrap content-start gap-2">
+            <a href="{{ route('news.index') }}" class="rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-semibold text-zinc-600 transition hover:border-brand-500/40 hover:text-brand-700">Últimas noticias</a>
+            <a href="{{ route('categories.show', 'politica') }}" class="rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-semibold text-zinc-600 transition hover:border-brand-500/40 hover:text-brand-700">Política</a>
+            <a href="{{ route('categories.show', 'economia') }}" class="rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-semibold text-zinc-600 transition hover:border-brand-500/40 hover:text-brand-700">Economía</a>
+            <a href="{{ route('categories.show', 'deportes') }}" class="rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-semibold text-zinc-600 transition hover:border-brand-500/40 hover:text-brand-700">Deportes</a>
+            <a href="{{ route('news.international') }}" class="rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-semibold text-zinc-600 transition hover:border-brand-500/40 hover:text-brand-700">Internacional</a>
+            <a href="{{ route('vacancies.index') }}" class="rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-semibold text-zinc-600 transition hover:border-brand-500/40 hover:text-brand-700">Empleos</a>
+        </div>
+    </div>
+</section>
+
+<section class="container-page pb-12 pt-8">
     <div class="relative overflow-hidden rounded-2xl border border-brand-500/20 bg-gradient-to-br from-brand-50 via-white to-white p-7 sm:p-10">
         <div class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-brand-600/20 blur-3xl"></div>
         <div class="relative max-w-2xl">

@@ -185,6 +185,14 @@
                     <a href="{{ route('sitemap') }}" class="transition hover:text-brand-700">Sitemap</a>
                     <a href="{{ route('feed') }}" class="transition hover:text-brand-700">RSS</a>
                 </div>
+                <div class="mt-4 border-t border-black/5 pt-3">
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-zinc-400">Ciudades</p>
+                    <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-600">
+                        @foreach(\App\Models\News::published()->whereNotNull('city')->where('city', '!=', '')->select('city')->distinct()->orderBy('city')->pluck('city')->take(8) as $footerCity)
+                            <a href="{{ route('news.city', \Illuminate\Support\Str::slug($footerCity)) }}" class="transition hover:text-brand-700">{{ $footerCity }}</a>
+                        @endforeach
+                    </div>
+                </div>
             </div>
             <div>
                 <h3 class="text-sm font-bold uppercase tracking-wider text-ink-950">Institucional</h3>
