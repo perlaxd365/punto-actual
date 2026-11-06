@@ -116,19 +116,7 @@
             <article class="card overflow-hidden" data-reveal>
                 @if($displayImage)
                     <div class="relative bg-zinc-100">
-                        <img src="{{ $displayImage }}" alt="{{ $course->title }}" class="aspect-[16/9] max-h-[420px] w-full {{ $course->image ? 'object-cover' : 'object-contain bg-white p-8' }}">
-                        @if($provider)
-                            <div class="absolute left-4 top-4 flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 shadow-sm backdrop-blur">
-                                <div class="flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white ring-1 ring-black/5">
-                                    @if($provider->logo)
-                                        <img src="{{ $provider->logo }}" alt="{{ $provider->name }}" class="h-full w-full object-contain">
-                                    @else
-                                        <span class="text-[9px] font-black text-brand-600">{{ $initials }}</span>
-                                    @endif
-                                </div>
-                                <span class="max-w-[180px] truncate text-xs font-bold text-ink-950">{{ $provider->name }}</span>
-                            </div>
-                        @endif
+                        <img src="{{ $displayImage }}" alt="{{ $course->title }}" class="aspect-[16/9] max-h-[360px] w-full {{ $course->image ? 'object-cover' : 'object-contain bg-white p-8' }}">
                     </div>
                 @endif
 
