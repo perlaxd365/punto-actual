@@ -40,4 +40,9 @@ class Course extends Model
     {
         return $this->entity?->name ?? 'Institución por confirmar';
     }
+
+    public function getDisplayImageAttribute(): ?string
+    {
+        return $this->image ?: ($this->entity?->cover_image ?: $this->entity?->logo);
+    }
 }

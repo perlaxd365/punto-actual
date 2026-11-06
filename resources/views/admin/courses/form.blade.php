@@ -58,17 +58,20 @@
         </label>
 
         <div class="grid gap-5 md:grid-cols-2">
-            <label class="label">Subir imagen
+            <label class="label">Subir imagen del curso (obligatoria)
                 <input type="file" name="image_file" accept="image/jpeg,image/png,image/webp,image/avif" class="input file:mr-3 file:rounded-full file:border-0 file:bg-brand-600 file:px-4 file:py-1.5 file:text-xs file:font-bold file:text-white">
             </label>
             <label class="label">O URL de imagen
                 <input name="image" value="{{ old('image', $course->image) }}" placeholder="https://..." class="input">
             </label>
         </div>
-        <p class="text-xs text-zinc-500">La imagen se sube a Cloudinary dentro de <code class="text-brand-600">punto-actual/cursos</code>.</p>
+        <p class="text-xs text-zinc-500">La imagen se sube a Cloudinary dentro de <code class="text-brand-600">punto-actual/cursos</code>. Si no subes una, se usará la portada o el logo de la institución seleccionada.</p>
 
-        @if($course->image)
-            <img src="{{ $course->image }}" alt="Imagen actual" class="max-h-48 w-full rounded-xl border border-black/10 object-cover">
+        @if($course->display_image)
+            <img src="{{ $course->display_image }}" alt="Imagen actual" class="max-h-48 w-full rounded-xl border border-black/10 object-cover">
+            @if(! $course->image)
+                <p class="text-xs font-semibold text-brand-600">Este curso está usando la imagen de la institución.</p>
+            @endif
         @endif
 
         <label class="label">Enlace oficial del curso

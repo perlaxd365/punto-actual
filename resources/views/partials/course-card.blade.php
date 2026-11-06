@@ -3,6 +3,7 @@
     $href = route('courses.show', $course);
     $provider = $course->entity;
     $initials = mb_strtoupper(mb_substr($provider?->name ?? 'PA', 0, 2));
+    $image = $course->display_image;
 @endphp
 
 @if($variant === 'list')
@@ -25,8 +26,8 @@
 @else
     <a href="{{ $href }}" class="group flex flex-col overflow-hidden rounded-xl border border-black/[0.07] bg-white transition duration-300 hover:-translate-y-0.5 hover:border-brand-500/40 hover:shadow-[0_18px_40px_-28px_rgba(0,0,0,0.5)]">
         <div class="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-brand-600 via-brand-700 to-ink-950">
-            @if($course->image)
-                <img src="{{ $course->image }}" alt="{{ $course->title }}" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]">
+            @if($image)
+                <img src="{{ $image }}" alt="{{ $course->title }}" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]">
             @else
                 <div class="flex h-full flex-col items-center justify-center gap-2 text-white">
                     <span class="text-5xl font-black text-white/20">{{ $initials }}</span>

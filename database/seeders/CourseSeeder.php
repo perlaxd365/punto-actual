@@ -39,8 +39,13 @@ class CourseSeeder extends Seeder
                     'website' => $data['website'],
                     'region' => $data['region'],
                     'description' => $data['description'],
+                    'cover_image' => asset('images/samples/entity-cover-1.jpg'),
                 ]
             );
+
+            if (! $entities[$name]->cover_image) {
+                $entities[$name]->updateQuietly(['cover_image' => asset('images/samples/entity-cover-1.jpg')]);
+            }
         }
 
         $courses = [
@@ -99,6 +104,25 @@ class CourseSeeder extends Seeder
                     'published_at' => now()->subDays($index),
                 ]
             );
+        }
+
+        $sampleByArea = [
+            'Ofimática' => 'news-1.jpg',
+            'Tecnología' => 'cover-1.jpg',
+            'Datos' => 'cover-1.jpg',
+            'Diseño' => 'cover-2.jpg',
+            'Idiomas' => 'cover-3.jpg',
+            'Marketing' => 'cover-4.jpg',
+            'Negocios' => 'cover-4.jpg',
+            'Comunicación' => 'cover-2.jpg',
+            'Oficios' => 'vacancy-1.jpg',
+            'Gastronomía' => 'entity-cover-1.jpg',
+        ];
+
+        foreach (Course::whereNull('image')->get() as $course) {
+            $course->updateQuietly([
+                'image' => asset('images/samples/'.($sampleByArea[$course->area] ?? 'cover-1.jpg')),
+            ]);
         }
     }
 }

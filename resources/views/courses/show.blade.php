@@ -3,6 +3,7 @@
 @php
     $provider = $course->entity;
     $initials = mb_strtoupper(mb_substr($provider?->name ?? 'PA', 0, 2));
+    $displayImage = $course->display_image;
     $pageTitle = $course->seo_title ?: $course->title;
     $pageDescription = $course->seo_description ?: ($course->excerpt ?: 'Curso recomendado por Punto Actual para mejorar el aprendizaje y la empleabilidad en el Perú.');
     $crumbs = [
@@ -68,6 +69,12 @@
                 <h1 class="mt-1 text-3xl font-black leading-tight tracking-tight sm:text-4xl">{{ $course->title }}</h1>
                 @if($course->excerpt)
                     <p class="mt-3 max-w-3xl text-base leading-relaxed text-zinc-600">{{ $course->excerpt }}</p>
+                @endif
+
+                @if($displayImage)
+                    <div class="mt-4 overflow-hidden rounded-2xl border border-black/10 bg-zinc-100">
+                        <img src="{{ $displayImage }}" alt="{{ $course->title }}" class="aspect-[16/9] w-full object-cover">
+                    </div>
                 @endif
 
                 <div class="mt-4 flex flex-wrap gap-2">

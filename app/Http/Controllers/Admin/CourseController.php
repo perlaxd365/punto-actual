@@ -8,6 +8,7 @@ use App\Models\Entity;
 use App\Services\CloudinaryImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class CourseController extends Controller
 {
@@ -29,6 +30,7 @@ class CourseController extends Controller
     public function store(Request $request, CloudinaryImageService $cloudinary)
     {
         $data = $this->validated($request);
+        $this->ensureImage($request, $data);
         $data['slug'] = Str::slug($data['title']).'-'.Str::lower(Str::random(5));
         $data['is_featured'] = $request->boolean('is_featured');
         $data['published_at'] = $data['published_at'] ?? ($data['status'] === 'published' ? now() : null);
@@ -53,6 +55,7 @@ class CourseController extends Controller
     public function update(Request $request, Course $curso, CloudinaryImageService $cloudinary)
     {
         $data = $this->validated($request);
+        $this->ensureImage($request, $data, $curso);
         $data['is_featured'] = $request->boolean('is_featured');
         $data['published_at'] = $data['published_at'] ?? ($data['status'] === 'published' ? ($curso->published_at ?? now()) : $curso->published_at);
 
@@ -97,5 +100,19 @@ class CourseController extends Controller
             'seo_title' => 'nullable|string|max:220',
             'seo_description' => 'nullable|string|max:320',
         ]);
+    }
+
+    private function ensureImage(Request $request, array $data, ?Course $course = null): void
+    {
+        $hasNewImage = $request->hasFile('image_file') || ! empty($data['image']);
+        $hasCurrentImage = $course?->image;
+        $entity = ! empty($data['entity_id']) ? Entity::find($data['entity_id']) : null;
+        $hasEntityImage = $entity && ($entity->cover_image || $entity->logo);
+
+        if (! $hasNewImage && ! $hasCurrentImage && ! $hasEntityImage) {
+            throw ValidationException::withMessages([
+                'image' => 'La imagen del curso es obligatoria. Sube una imagen o selecciona una institución que tenga imagen.',
+            ]);
+        }
     }
 }
