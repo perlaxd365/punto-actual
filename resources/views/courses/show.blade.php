@@ -73,7 +73,7 @@
 
                 @if($displayImage)
                     <div class="mt-4 overflow-hidden rounded-2xl border border-black/10 bg-zinc-100">
-                        <img src="{{ $displayImage }}" alt="{{ $course->title }}" class="aspect-[16/9] w-full object-cover">
+                        <img src="{{ $displayImage }}" alt="{{ $course->title }}" class="aspect-[16/9] w-full {{ $course->image ? 'object-cover' : 'object-contain bg-white p-10' }}">
                     </div>
                 @endif
 

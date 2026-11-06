@@ -31,6 +31,8 @@ class CourseSeeder extends Seeder
         $entities = [];
 
         foreach ($providers as $name => $data) {
+            $logo = asset('images/entities/'.$data['slug'].'.png');
+
             $entities[$name] = Entity::firstOrCreate(
                 ['name' => $name],
                 [
@@ -39,13 +41,15 @@ class CourseSeeder extends Seeder
                     'website' => $data['website'],
                     'region' => $data['region'],
                     'description' => $data['description'],
-                    'cover_image' => asset('images/samples/entity-cover-1.jpg'),
+                    'logo' => $logo,
+                    'cover_image' => $logo,
                 ]
             );
 
-            if (! $entities[$name]->cover_image) {
-                $entities[$name]->updateQuietly(['cover_image' => asset('images/samples/entity-cover-1.jpg')]);
-            }
+            $entities[$name]->updateQuietly([
+                'logo' => $logo,
+                'cover_image' => $logo,
+            ]);
         }
 
         $courses = [
@@ -98,6 +102,7 @@ class CourseSeeder extends Seeder
                 ['slug' => $data['slug']],
                 $data + [
                     'entity_id' => $provider?->id,
+                    'image' => asset('images/courses/'.$data['slug'].'.jpg'),
                     'official_url' => $provider?->website ?? 'https://www.gob.pe/',
                     'status' => 'published',
                     'is_featured' => in_array($data['slug'], $featured, true),
@@ -119,10 +124,13 @@ class CourseSeeder extends Seeder
             'Gastronomía' => 'entity-cover-1.jpg',
         ];
 
-        foreach (Course::whereNull('image')->get() as $course) {
-            $course->updateQuietly([
-                'image' => asset('images/samples/'.($sampleByArea[$course->area] ?? 'cover-1.jpg')),
-            ]);
+        foreach (Course::all() as $course) {
+            $path = 'images/courses/'.$course->slug.'.jpg';
+            $image = is_file(public_path($path))
+                ? asset($path)
+                : asset('images/samples/'.($sampleByArea[$course->area] ?? 'cover-1.jpg'));
+
+            $course->updateQuietly(['image' => $image]);
         }
     }
 }
