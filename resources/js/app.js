@@ -162,11 +162,49 @@ function initScrollProgress() {
     window.addEventListener('resize', update);
 }
 
+function initTicker() {
+    document.querySelectorAll('[data-ticker]').forEach((ticker) => {
+        const items = Array.from(ticker.querySelectorAll('[data-ticker-item]'));
+
+        if (items.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
+
+        let index = 0;
+        let timer = null;
+
+        const show = (next) => {
+            items.forEach((item, i) => item.classList.toggle('is-active', i === next));
+            index = next;
+        };
+
+        const stop = () => {
+            if (timer) {
+                window.clearInterval(timer);
+                timer = null;
+            }
+        };
+
+        const start = () => {
+            stop();
+            timer = window.setInterval(() => show((index + 1) % items.length), 4500);
+        };
+
+        ticker.addEventListener('mouseenter', stop);
+        ticker.addEventListener('mouseleave', start);
+        ticker.addEventListener('focusin', stop);
+        ticker.addEventListener('focusout', start);
+
+        start();
+    });
+}
+
 function initInteractive() {
     initCarousels();
     initSliders();
     initReveal();
     initScrollProgress();
+    initTicker();
 }
 
 if (document.readyState === 'loading') {

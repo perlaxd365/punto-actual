@@ -45,13 +45,10 @@
         <span class="flex shrink-0 items-center gap-1.5 rounded bg-white/15 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider">
             <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-white"></span> Última hora
         </span>
-        <div class="ticker-mask min-w-0 flex-1">
-            <div class="ticker-track items-center gap-8 text-[13px] font-semibold">
+        <div class="ticker-viewport min-w-0 flex-1" data-ticker>
+            <div class="ticker-stack">
                 @foreach($ticker as $item)
-                    <a href="{{ route('news.show', $item) }}" class="shrink-0 whitespace-nowrap transition hover:text-white/80">{{ $item->title }}</a>
-                @endforeach
-                @foreach($ticker as $item)
-                    <a href="{{ route('news.show', $item) }}" class="shrink-0 whitespace-nowrap transition hover:text-white/80" aria-hidden="true" tabindex="-1">{{ $item->title }}</a>
+                    <a href="{{ route('news.show', $item) }}" data-ticker-item class="ticker-item text-[13px] font-semibold transition hover:text-white/80 {{ $loop->first ? 'is-active' : '' }}">{{ $item->title }}</a>
                 @endforeach
             </div>
         </div>
