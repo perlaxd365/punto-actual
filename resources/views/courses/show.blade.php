@@ -67,7 +67,7 @@
     <div class="container-page relative py-6 sm:py-10">
         @include('partials.breadcrumbs', ['items' => $crumbs])
 
-        <div class="mt-4 grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center">
+        <div class="mt-4 grid gap-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.65fr)] lg:items-center">
             <div data-reveal>
                 <div class="flex flex-wrap items-center gap-2">
                     <span class="badge-red">{{ $course->area }}</span>
@@ -109,25 +109,25 @@
                 </div>
             </div>
 
-            <div class="relative" data-reveal style="--reveal-delay:140ms">
-                <div class="group relative overflow-hidden rounded-3xl border border-black/10 bg-zinc-100 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_30px_70px_-40px_rgba(0,0,0,0.5)]">
+            <div class="relative mx-auto w-full max-w-sm lg:ml-auto lg:mr-0" data-reveal style="--reveal-delay:140ms">
+                <div class="group relative overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.35)]">
                     @if($displayImage)
-                        <img src="{{ $displayImage }}" alt="{{ $course->title }}" class="aspect-[4/3] w-full transition duration-700 group-hover:scale-[1.03] {{ $course->image ? 'object-cover' : 'object-contain bg-white p-10' }}">
+                        <img src="{{ $displayImage }}" alt="{{ $course->title }}" class="aspect-[16/10] w-full transition duration-700 group-hover:scale-[1.03] {{ $course->image ? 'object-cover' : 'object-contain bg-white p-6' }}">
                     @else
-                        <div class="flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-brand-600 via-brand-700 to-ink-950 text-6xl font-black text-white/20">{{ $initials }}</div>
+                        <div class="flex aspect-[16/10] items-center justify-center bg-gradient-to-br from-brand-600 via-brand-700 to-ink-950 text-5xl font-black text-white/20">{{ $initials }}</div>
                     @endif
-                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent p-5">
-                        <div class="flex items-center gap-3">
-                            <div class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1.5">
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent p-3">
+                        <div class="flex items-center gap-2">
+                            <div class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white p-1">
                                 @if($provider?->logo)
                                     <img src="{{ $provider->logo }}" alt="{{ $provider->name }}" class="h-full w-full object-contain">
                                 @else
-                                    <span class="text-xs font-black text-brand-600">{{ $initials }}</span>
+                                    <span class="text-[10px] font-black text-brand-600">{{ $initials }}</span>
                                 @endif
                             </div>
                             <div class="min-w-0">
-                                <p class="text-[10px] font-bold uppercase tracking-wider text-white/70">Institución</p>
-                                <p class="truncate text-sm font-black text-white">{{ $provider?->name ?? 'Punto Actual' }}</p>
+                                <p class="text-[9px] font-bold uppercase tracking-wider text-white/70">Institución</p>
+                                <p class="truncate text-xs font-black text-white">{{ $provider?->name ?? 'Punto Actual' }}</p>
                             </div>
                         </div>
                     </div>
