@@ -4,6 +4,21 @@
     <url><loc>{{ route('home') }}</loc></url>
     <url><loc>{{ route('news.index') }}</loc></url>
     <url><loc>{{ route('vacancies.index') }}</loc></url>
+    <url><loc>{{ route('news.international') }}</loc></url>
+    <url><loc>{{ route('pages.nosotros') }}</loc></url>
+    <url><loc>{{ route('pages.editorial') }}</loc></url>
+    <url><loc>{{ route('pages.contacto') }}</loc></url>
+    @foreach($categories as $category)
+        <url>
+            <loc>{{ route('categories.show', $category->slug) }}</loc>
+            <lastmod>{{ $category->updated_at?->toAtomString() ?? now()->toAtomString() }}</lastmod>
+        </url>
+    @endforeach
+    @foreach($cities as $city)
+        <url>
+            <loc>{{ route('news.city', $city['slug']) }}</loc>
+        </url>
+    @endforeach
     @foreach($news as $item)
         <url>
             <loc>{{ route('news.show', $item->slug) }}</loc>

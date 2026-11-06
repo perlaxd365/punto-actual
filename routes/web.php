@@ -25,29 +25,46 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    $sectionSlugs = ['politica', 'economia', 'sociedad', 'deportes', 'espectaculos', 'tecnologia', 'internacional', 'regiones', 'educacion', 'salud'];
+    $sectionCategories = Category::whereIn('slug', $sectionSlugs)->get()->keyBy('slug');
+
+    $sections = collect($sectionSlugs)
+        ->map(function (string $slug) use ($sectionCategories) {
+            $category = $sectionCategories->get($slug);
+
+            if (! $category) {
+                return null;
+            }
+
+            $items = News::published()->with('category')
+                ->where('category_id', $category->id)
+                ->latest('published_at')
+                ->take(4)
+                ->get();
+
+            if ($items->isEmpty()) {
+                return null;
+            }
+
+            return (object) ['category' => $category, 'items' => $items];
+        })
+        ->filter()
+        ->values();
+
     return view('home', [
-        'featured' => News::published()->with('category')->featured()->latest('published_at')->take(4)->get(),
-        'latest' => News::published()->with('category')->latest('published_at')->take(8)->get(),
-        'vacancies' => \App\Models\Vacancy::published()->latest()->take(6)->get(),
-        'categories' => Category::orderBy('name')->get(),
         'coverNews' => News::published()->with('category')->cover()->take(6)->get(),
-        'international' => News::published()
-            ->with('category')
-            ->whereHas('category', fn ($query) => $query->where('slug', 'internacional'))
-            ->latest('published_at')
-            ->take(3)
-            ->get(),
-        'local' => News::published()
-            ->with('category')
-            ->whereHas('category', fn ($query) => $query->where('slug', '!=', 'internacional'))
-            ->latest('published_at')
-            ->take(9)
-            ->get(),
+        'featured' => News::published()->with('category')->featured()->latest('published_at')->take(4)->get(),
+        'latest' => News::published()->with('category')->latest('published_at')->take(9)->get(),
+        'sections' => $sections,
+        'vacancies' => \App\Models\Vacancy::published()->with('entity')->latest('published_at')->take(6)->get(),
+        'categories' => Category::orderBy('name')->get(),
+        'cities' => News::published()->whereNotNull('city')->where('city', '!=', '')->select('city')->distinct()->orderBy('city')->pluck('city'),
     ]);
 })->name('home');
 
 Route::get('/noticias', [NewsController::class, 'index'])->name('news.index');
 Route::get('/internacional', [NewsController::class, 'international'])->name('news.international');
+Route::get('/noticias/ciudad/{city}', [NewsController::class, 'city'])->name('news.city');
 Route::get('/noticias/{news:slug}', [NewsController::class, 'show'])->name('news.show');
 Route::get('/og/noticia/{news:slug}', [OgImageController::class, 'news'])->name('og.news');
 Route::get('/empleos', [VacancyController::class, 'index'])->name('vacancies.index');
