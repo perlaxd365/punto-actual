@@ -319,17 +319,8 @@ a:hover > .cta-arrow {
         animation: none !important;
     }
 
-    .ticker-stack {
-        display: flex;
-        height: auto;
-        gap: 1.5rem;
-        overflow-x: auto;
-    }
-
     .ticker-item {
-        position: static;
-        opacity: 1;
         transform: none;
-        pointer-events: auto;
+        transition: opacity 150ms linear;
     }
 }

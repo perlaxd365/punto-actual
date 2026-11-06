@@ -166,7 +166,7 @@ function initTicker() {
     document.querySelectorAll('[data-ticker]').forEach((ticker) => {
         const items = Array.from(ticker.querySelectorAll('[data-ticker-item]'));
 
-        if (items.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (items.length < 2) {
             return;
         }
 
